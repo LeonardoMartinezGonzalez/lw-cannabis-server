@@ -3,8 +3,9 @@ const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
 const authController = require('../controllers/authController');
+const auth = require('../middleware/auth');
 
-// Crear un Cliente
+// Iniciar sesion
 // api/auth
 router.post('/', 
     [
@@ -12,6 +13,12 @@ router.post('/',
         check('clave', 'La clave debe tener al menos 6 caracteres').isLength({ min: 6 })
     ],
     authController.autenticarCliente
+);
+
+// Obtiene el cliente autenticado
+router.get('/',
+    auth,
+    authController.clienteAutenticado
 );
 
 module.exports = router;
